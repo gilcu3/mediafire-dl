@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import requests
 from bs4 import BeautifulSoup
@@ -77,7 +77,7 @@ class MediafireDownloader:
     def download(self, mediafire_link):
         mediafire_folder_key = "mediafire.com/folder/"
         folder_slug_start = mediafire_link.find(mediafire_folder_key) + len(mediafire_folder_key)
-        if folder_slug_start < 0:
+        if mediafire_link.find(mediafire_folder_key) < 0:
             self.download_file(mediafire_link)
         else:
             hash_pos = mediafire_link.rfind('#') + 1
@@ -85,9 +85,9 @@ class MediafireDownloader:
                 # Folder is after #
                 folder_key = mediafire_link[hash_pos:]
             else:
-		folder_slug_end = mediafire_link.find('/', folder_slug_start)
-		if folder_slug_end < 0:
-			folder_slug_end = len(mediafire_link)
+                folder_slug_end = mediafire_link.find('/', folder_slug_start)
+                if folder_slug_end < 0:
+                    folder_slug_end = len(mediafire_link)
                 folder_key = mediafire_link[folder_slug_start:folder_slug_end]
             self.download_folder(folder_key, '')
 
@@ -97,7 +97,7 @@ class MediafireDownloader:
 
 
     #@staticmethod
-    def download_file(self, mediafire_file_link, parent, file_name=''):
+    def download_file(self, mediafire_file_link, parent='', file_name=''):
         cwd = os.getcwd()
         self.dl_page_url = mediafire_file_link
         print('----------------')
